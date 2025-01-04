@@ -75,7 +75,16 @@ public:
     }
 
     void remove_edge(const TVertex& from, const TVertex& to) override {
+        if (!adjacency_list_.contains_key(from)) {
+            return;
+        }
 
+        HashTable<TVertex, TWeight> from_neighbors = adjacency_list_.get(from);
+
+        if (from_neighbors.contains_key(to)) {
+            from_neighbors.remove(to);
+            adjacency_list_.add(from, from_neighbors);
+        }
     }
 
 private:
