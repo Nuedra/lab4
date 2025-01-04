@@ -1,7 +1,6 @@
 #ifndef LAB4_DIRECTEDGRAPH_HPP
 #define LAB4_DIRECTEDGRAPH_HPP
 
-#include <iostream>
 #include "IGraph.hpp"
 #include "data_structures/HashTable.hpp"
 
@@ -23,7 +22,25 @@ public:
     }
 
     void remove_vertex(const TVertex& vertex) override {
+        if (!adjacency_list_.contains_key(vertex)) {
+            return;
+        }
 
+        adjacency_list_.remove(vertex);
+
+        auto it_main = adjacency_list_.get_iterator();
+        auto kvp = it_main.get_current_item();
+
+        while (it_main.try_get_current_item(kvp)) {
+            HashTable<TVertex, TWeight> neighbors = kvp.value;
+
+            if (neighbors.contains_key(vertex)) {
+                neighbors.remove(vertex);
+                adjacency_list_.add(kvp.key, neighbors);
+            }
+
+            it_main.next();
+        }
     }
 
     void add_edge(const TVertex& from, const TVertex& to, const TWeight& weight) override {
@@ -42,9 +59,6 @@ public:
 
     }
 
-    void print_graph() const override {
-
-    }
 
 private:
     //структура: вершина -> (HashTable из соседей -> вес дуги)
