@@ -44,21 +44,39 @@ public:
     }
 
     void add_edge(const TVertex& from, const TVertex& to, const TWeight& weight) override {
+        if (!adjacency_list_.contains_key(from)) {
+            add_vertex(from);
+        }
+        if (!adjacency_list_.contains_key(to)) {
+            add_vertex(to);
+        }
 
+        HashTable<TVertex, TWeight> from_neighbors = adjacency_list_.get(from);
+        from_neighbors.add(to, weight);
+        adjacency_list_.add(from, from_neighbors);
+    }
+
+    bool contains_edge(const TVertex& from, const TVertex& to) const override {
+        if (!adjacency_list_.contains_key(from)) {
+            return false;
+        }
+
+        const HashTable<TVertex, TWeight>& from_neighbors = adjacency_list_.get(from);
+        return from_neighbors.contains_key(to);
+    }
+
+    TWeight get_edge_weight(const TVertex& from, const TVertex& to) const override {
+        if (!adjacency_list_.contains_key(from)) {
+            throw std::out_of_range("vertex 'from' not found");
+        }
+
+        const HashTable<TVertex, TWeight>& from_neighbors = adjacency_list_.get(from);
+        return from_neighbors.get(to);
     }
 
     void remove_edge(const TVertex& from, const TVertex& to) override {
 
     }
-
-    bool contains_edge(const TVertex& from, const TVertex& to) const override {
-
-    }
-
-    TWeight get_edge_weight(const TVertex& from, const TVertex& to) const override {
-
-    }
-
 
 private:
     //структура: вершина -> (HashTable из соседей -> вес дуги)
