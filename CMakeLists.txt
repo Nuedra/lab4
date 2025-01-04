@@ -9,4 +9,5 @@ add_executable(lab4 main.cpp
         data_structures/IDictionary.hpp
         data_structures/HashTable.hpp
         sorters/Isorter.hpp
-        Sorters/HeapSorter.hpp)
+        Sorters/HeapSorter.hpp
+        IGraph.hpp)

@@ -1,7 +1,7 @@
 #ifndef LAB3_PAIR_HPP
 #define LAB3_PAIR_HPP
 
-#include <functional>
+#include <functional> // for hash
 
 template<typename T1, typename T2>
 struct Pair {
