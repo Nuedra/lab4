@@ -8,5 +8,8 @@ void test_contains_vertex();
 void test_contains_edge();
 void test_get_edge_weight();
 void test_remove_edge();
+void start_tests();
+void test_get_vertices();
+void test_get_outgoing_edges();
 
 #endif //LAB4_TESTS_HPP

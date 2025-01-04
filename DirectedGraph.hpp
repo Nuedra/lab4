@@ -3,6 +3,8 @@
 
 #include "IGraph.hpp"
 #include "data_structures/HashTable.hpp"
+#include "data_structures/ArraySequence.h"
+#include "pair/Pair.hpp"
 
 template <typename TVertex, typename TWeight>
 class DirectedGraph : public IGraph<TVertex, TWeight> {
@@ -71,6 +73,9 @@ public:
         }
 
         const HashTable<TVertex, TWeight>& from_neighbors = adjacency_list_.get(from);
+        if (!from_neighbors.contains_key(to)) {
+            throw std::out_of_range("Edge not found.");
+        }
         return from_neighbors.get(to);
     }
 
@@ -85,6 +90,42 @@ public:
             from_neighbors.remove(to);
             adjacency_list_.add(from, from_neighbors);
         }
+    }
+
+    ArraySequence<TVertex> get_vertices() const override {
+        ArraySequence<TVertex> result;
+        result.reserve(adjacency_list_.get_count());
+
+        auto it_main = adjacency_list_.get_iterator();
+        KeyValuePair<TVertex, HashTable<TVertex, TWeight>> kvp;
+
+        while (it_main.try_get_current_item(kvp)) {
+            result.append(kvp.key);
+            it_main.next();
+        }
+
+        return result;
+    }
+
+    ArraySequence<Pair<TVertex, TWeight>>
+    get_outgoing_edges(const TVertex& vertex) const override
+    {
+        ArraySequence<Pair<TVertex, TWeight>> edges;
+        if (!adjacency_list_.contains_key(vertex)) {
+            return edges;
+        }
+
+        const HashTable<TVertex, TWeight>& neighbors = adjacency_list_.get(vertex);
+        edges.reserve(neighbors.get_count());
+
+        auto it_neighbors = neighbors.get_iterator();
+        KeyValuePair<TVertex, TWeight> neigh;
+        while (it_neighbors.try_get_current_item(neigh)) {
+            edges.append(neigh);
+            it_neighbors.next();
+        }
+
+        return edges;
     }
 
 private:

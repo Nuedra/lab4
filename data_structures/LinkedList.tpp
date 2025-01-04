@@ -78,7 +78,7 @@ LinkedList<T>* LinkedList<T>::get_sub_list(int start_index, int end_index) {
 
 template<class T>
 void LinkedList<T>::append(T item) {
-    LinkedListNode<T>* node = new LinkedListNode<T>(item, nullptr);
+    auto* node = new LinkedListNode<T>(item, nullptr);
     if (tail == nullptr) {
         head = tail = node;
     } else {
@@ -90,7 +90,7 @@ void LinkedList<T>::append(T item) {
 
 template<class T>
 void LinkedList<T>::prepend(T item) {
-    LinkedListNode<T>* new_node = new LinkedListNode<T>(item, head);
+    auto* new_node = new LinkedListNode<T>(item, head);
     head = new_node;
     if (length == 0) {
         tail = new_node;
@@ -115,7 +115,7 @@ void LinkedList<T>::insert_at(T item, int index) {
     for (int i = 0; i < index - 1; i++) {
         current = current->next;
     }
-    LinkedListNode<T>* new_node = new LinkedListNode<T>(item, current->next);
+    auto* new_node = new LinkedListNode<T>(item, current->next);
     current->next = new_node;
     length++;
 }

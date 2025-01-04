@@ -9,7 +9,7 @@ public:
     T value;
     LinkedListNode<T>* next;
 
-    LinkedListNode(const T& value, LinkedListNode<T>* next = nullptr);
+    explicit LinkedListNode(const T& value, LinkedListNode<T>* next = nullptr);
 
 };
 
