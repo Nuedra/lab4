@@ -83,7 +83,7 @@ void test_get_edge_weight() {
     catch (const std::out_of_range&) {
         exception_thrown = true;
     }
-    assert(exception_thrown && "Expected std::out_of_range when getting weight for non-existent edge");
+    assert(exception_thrown);
 
     graph.add_edge("A", "B", 10);
     assert(graph.get_edge_weight("A", "B") == 10);
