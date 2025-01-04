@@ -10,4 +10,7 @@ add_executable(lab4 main.cpp
         data_structures/HashTable.hpp
         sorters/Isorter.hpp
         Sorters/HeapSorter.hpp
-        IGraph.hpp)
+        IGraph.hpp
+        DirectedGraph.hpp
+        tests.hpp
+        tests.cpp)

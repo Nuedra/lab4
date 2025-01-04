@@ -18,6 +18,25 @@ public:
         buckets_ = DynamicArray<LinkedList<KeyValuePair<TKey, TValue>>>(capacity_);
     }
 
+    HashTable(const HashTable& other): buckets_(other.buckets_), ordered_keys_(other.ordered_keys_),
+              capacity_(other.capacity_),
+              count_(other.count_),
+              hasher_(other.hasher_) {
+    }
+
+    HashTable& operator=(const HashTable& other) {
+        if (this == &other)
+            return *this;
+
+        buckets_ = other.buckets_;
+        ordered_keys_ = other.ordered_keys_;
+        capacity_ = other.capacity_;
+        count_ = other.count_;
+        hasher_ = other.hasher_;
+
+        return *this;
+    }
+
     ~HashTable() override = default;
 
     void add(const TKey& key, const TValue& value) override {
