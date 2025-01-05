@@ -14,5 +14,6 @@ void test_get_outgoing_edges();
 void test_enqueue_dequeue();
 void test_peek_methods();
 void test_hidden_methods();
+void test_dijkstra();
 
 #endif //LAB4_TESTS_HPP

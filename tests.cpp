@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include "DirectedGraph.hpp"
 #include "data_structures/PriorityQueue.hpp"
+#include "graph_algorithms.hpp"
 
 void test_add_vertex() {
     DirectedGraph<std::string, int> graph;
@@ -109,18 +110,18 @@ void test_get_vertices() {
     DirectedGraph<std::string, int> graph;
 
     {
-        auto vertices = graph.get_vertices();
-        assert(vertices.get_length() == 0);
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 0);
     }
 
     graph.add_vertex("A");
     {
-        auto vertices = graph.get_vertices();
-        assert(vertices.get_length() == 1);
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 1);
 
         bool has_a = false;
-        for (int i = 0; i < vertices.get_length(); i++) {
-            if (vertices.get(i) == "A") {
+        for (int i = 0; i < verts.get_length(); i++) {
+            if (verts.get(i) == "A") {
                 has_a = true;
                 break;
             }
@@ -130,13 +131,13 @@ void test_get_vertices() {
 
     graph.add_vertex("B");
     {
-        auto vertices = graph.get_vertices();
-        assert(vertices.get_length() == 2);
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 2);
 
         bool has_a = false;
         bool has_b = false;
-        for (int i = 0; i < vertices.get_length(); i++) {
-            const std::string& v = vertices.get(i);
+        for (int i = 0; i < verts.get_length(); i++) {
+            const std::string& v = verts.get(i);
             if (v == "A") has_a = true;
             if (v == "B") has_b = true;
         }
@@ -145,8 +146,8 @@ void test_get_vertices() {
 
     graph.add_edge("A", "B", 5);
     {
-        auto vertices = graph.get_vertices();
-        assert(vertices.get_length() == 2);
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 2);
     }
 }
 
@@ -321,6 +322,81 @@ void test_hidden_methods() {
     assert(exception_thrown);
 }
 
+void test_dijkstra() {
+    {
+        DirectedGraph<std::string, double> graph;
+
+        bool exception_thrown = false;
+        try {
+            auto dist = dijkstra_shortest_paths<std::string, double>(graph, "A");
+        }
+        catch (const std::invalid_argument&) {
+            exception_thrown = true;
+        }
+        assert(exception_thrown);
+    }
+
+    {
+        DirectedGraph<std::string, double> graph;
+        graph.add_vertex("A");
+
+        auto dist = dijkstra_shortest_paths<std::string, double>(graph, "A");
+
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 1);
+        assert(verts.get(0) == "A");
+
+        assert(dist.get_length() == 1);
+        assert(dist.get(0) == 0.0);
+    }
+
+    {
+        DirectedGraph<std::string, double> graph;
+        graph.add_vertex("A");
+        graph.add_vertex("B");
+        // нет рёбер
+
+        auto dist = dijkstra_shortest_paths<std::string, double>(graph, "A");
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 2);
+
+        int idx_a = -1, idx_b = -1;
+        for (int i = 0; i < verts.get_length(); i++) {
+            if (verts.get(i) == "A") idx_a = i;
+            if (verts.get(i) == "B") idx_b = i;
+        }
+        assert(idx_a != -1 && idx_b != -1);
+
+        static const double INF = 1e9;
+        assert(dist.get(idx_a) == 0.0);
+        assert(dist.get(idx_b) == INF);
+    }
+
+    {
+        DirectedGraph<std::string, double> graph;
+        graph.add_edge("A", "B", 2.5);
+
+        auto dist = dijkstra_shortest_paths<std::string, double>(graph, "A");
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 2);
+
+        int idx_a = -1, idx_b = -1;
+        for (int i = 0; i < verts.get_length(); i++) {
+            if (verts.get(i) == "A") idx_a = i;
+            if (verts.get(i) == "B") idx_b = i;
+        }
+        assert(idx_a != -1 && idx_b != -1);
+
+        assert(dist.get(idx_a) == 0.0);
+        assert(dist.get(idx_b) == 2.5);
+
+        auto distB = dijkstra_shortest_paths<std::string, double>(graph, "B");
+        static const double INF = 1e9;
+        assert(distB.get(idx_b) == 0.0);
+        assert(distB.get(idx_a) == INF);
+    }
+}
+
 void start_tests() {
     test_add_vertex();
     test_remove_vertex();
@@ -334,6 +410,7 @@ void start_tests() {
     test_enqueue_dequeue();
     test_peek_methods();
     test_hidden_methods();
+    test_dijkstra();
 
     std::cout << "All tests are passed!\n";
 }

@@ -5,6 +5,7 @@
 #include "data_structures/HashTable.hpp"
 #include "data_structures/ArraySequence.h"
 #include "pair/Pair.hpp"
+#include <stdexcept>
 
 template <typename TVertex, typename TWeight>
 class DirectedGraph : public IGraph<TVertex, TWeight> {
