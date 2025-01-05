@@ -2,8 +2,9 @@
 #include <cassert>
 #include <iostream>
 #include <string>
-#include "pair/Pair.hpp"
+#include <stdexcept>
 #include "DirectedGraph.hpp"
+#include "data_structures/PriorityQueue.hpp"
 
 void test_add_vertex() {
     DirectedGraph<std::string, int> graph;
@@ -216,6 +217,109 @@ void test_get_outgoing_edges() {
     }
 }
 
+void test_enqueue_dequeue() {
+    PriorityQueue<std::string> pq;
+
+    bool exception_thrown = false;
+    try {
+        pq.dequeue();
+    }
+    catch (const std::out_of_range&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+
+    pq.enqueue("low", 1);
+    pq.enqueue("medium", 5);
+    pq.enqueue("urgent", 10);
+    pq.enqueue("equal_medium", 5);
+
+    assert(pq.dequeue() == "urgent");
+
+    std::string second = pq.dequeue();
+    std::string third  = pq.dequeue();
+    assert(
+            (second == "medium" && third == "equal_medium") ||
+            (second == "equal_medium" && third == "medium")
+    );
+
+    std::string fourth = pq.dequeue();
+    assert(fourth == "low");
+
+    exception_thrown = false;
+    try {
+        pq.dequeue();
+    } catch (const std::out_of_range&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+}
+
+void test_peek_methods() {
+    PriorityQueue<int> pq;
+
+    bool exception_thrown = false;
+    try {
+        pq.peek_first();
+    }
+    catch (const std::out_of_range&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+
+    exception_thrown = false;
+    try {
+        pq.peek_last();
+    }
+    catch (const std::out_of_range&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+
+    pq.enqueue(11, 5);
+    pq.enqueue(22, 8);
+    pq.enqueue(33, 8);
+    pq.enqueue(44, 10);
+
+    assert(pq.peek_first() == 44);
+
+    assert(pq.peek_last() == 11);
+
+    assert(pq.peek(0) == 44);
+    assert(pq.peek(3) == 11);
+
+    exception_thrown = false;
+    try {
+        pq.peek(99); //  такого индекса нет
+    }
+    catch (const std::out_of_range&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+}
+
+void test_hidden_methods() {
+    PriorityQueue<int> pq;
+    Sequence<int>& seq_ref = pq; // ссылка на базовый класс
+
+    bool exception_thrown = false;
+    try {
+        (void)seq_ref.get_first(); // принудительно вызываем
+    }
+    catch (const std::logic_error&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+
+    exception_thrown = false;
+    try {
+        seq_ref.insert_at(123, 0);
+    }
+    catch (const std::logic_error&) {
+        exception_thrown = true;
+    }
+    assert(exception_thrown);
+}
 
 void start_tests() {
     test_add_vertex();
@@ -227,6 +331,9 @@ void start_tests() {
     test_remove_edge();
     test_get_vertices();
     test_get_outgoing_edges();
+    test_enqueue_dequeue();
+    test_peek_methods();
+    test_hidden_methods();
 
     std::cout << "All tests are passed!\n";
 }

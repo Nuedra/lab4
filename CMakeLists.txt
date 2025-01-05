@@ -13,4 +13,5 @@ add_executable(lab4 main.cpp
         IGraph.hpp
         DirectedGraph.hpp
         tests.hpp
-        tests.cpp)
+        tests.cpp
+        data_structures/PriorityQueue.hpp)
