@@ -3,6 +3,10 @@ project(lab4)
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(Boost REQUIRED COMPONENTS iostreams)
+
+include_directories(${Boost_INCLUDE_DIRS})
+
 add_executable(lab4 main.cpp
         pair/Pair.hpp
         data_structures/IIterator.hpp
@@ -17,9 +21,12 @@ add_executable(lab4 main.cpp
         PriorityQueue.hpp
         dijkstra_algorithm.hpp
         limits.hpp
-        dot/dot_actions.hpp
-        dot/dot_actions.cpp
+        csv/csv_actions.hpp
+        csv/csv_actions.cpp
         dijkstra_timer.hpp
         dijkstra_timer.cpp
         menu.hpp
-        menu.cpp)
+        menu.cpp
+        graphics/dijkstra_times_graphic.hpp)
+
+target_link_libraries(lab4 ${Boost_LIBRARIES})

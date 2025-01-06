@@ -4,7 +4,7 @@
 #include "DirectedGraph.hpp"
 #include <iostream>
 #include "dijkstra_algorithm.hpp"
-#include "dot/dot_actions.hpp"
+#include "csv/csv_actions.hpp"
 #include "dijkstra_timer.hpp"
 #include <string>
 #include "pair/Pair.hpp"
@@ -24,10 +24,33 @@ enum class WeightChoice {
 VertexChoice choose_vertex_type();
 WeightChoice choose_weight_type();
 
-int read_int_in_range(const char* prompt, int min_val, int max_val);
+template <typename T>
+T read_in_range(const char* prompt, T min_val, T max_val) {
+    while (true) {
+        std::cout << prompt;
+
+        T value;
+        if (!(std::cin >> value)) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Некорректный ввод, попробуйте снова.\n";
+            continue;
+        }
+
+        std::cin.ignore(10000, '\n');
+
+        if (value < min_val || value > max_val) {
+            std::cout << "Значение должно быть в диапазоне ["
+                      << min_val << ", " << max_val << "]. Попробуйте снова.\n";
+            continue;
+        }
+
+        return value;
+    }
+}
 
 template<typename TVertex, typename TWeight>
-void print_graph(const IGraph<TVertex, TWeight>& graph) {
+void print_graph(const DirectedGraph<TVertex, TWeight>& graph) {
     std::cout << "Directed Graph contents:\n";
 
     auto verts = graph.get_vertices();
@@ -56,7 +79,7 @@ void graph_menu(DirectedGraph<TVertex, TWeight>& graph) {
                   << "5. Вывести граф\n"
                   << "6. Запустить Дейкстру\n"
                   << "0. Вернуться в главное меню\n";
-        int c = read_int_in_range("Выберите опцию: ", 0, 6);
+        int c = read_in_range<int>("Выберите опцию: ", 0, 6);
         if (c == 0) {
             break;
         }
@@ -110,6 +133,37 @@ void graph_menu(DirectedGraph<TVertex, TWeight>& graph) {
             print_graph(graph);
         }
         else if (c == 6) {
+            std::cout << "Введите стартовую вершину: ";
+            TVertex start;
+            std::cin >> start;
+
+            auto dist = dijkstra_shortest_paths(graph, start);
+            auto verts = graph.get_vertices();
+            for (int i = 0; i < verts.get_length(); i++) {
+                if(dist.get(i) != custom_limits<TWeight>::max()){
+                    std::cout << "dist(" << start << " -> " << verts.get(i) << ") = " << dist.get(i) << "\n";
+                }
+            }
+        }
+    }
+}
+
+template<typename TVertex, typename TWeight>
+void graph_menu_for_random_graph(DirectedGraph<TVertex, TWeight>& graph) {
+    while (true) {
+        std::cout << "\n[Операции с случайно созданным графом]\n"
+                  << "1. Вывести граф\n"
+                  << "2. Запустить Дейкстру\n"
+                  << "3. Представь в графическом виде(graphviz)\n"
+                  << "0. Вернуться в главное меню\n";
+        int c = read_in_range<int>("Выберите опцию: ", 0, 3);
+        if (c == 0) {
+            break;
+        }
+        if (c == 1) {
+            print_graph(graph);
+        }
+        else if (c == 2) {
             std::cout << "Введите стартовую вершину: ";
             TVertex start;
             std::cin >> start;
