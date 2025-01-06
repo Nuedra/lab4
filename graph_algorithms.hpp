@@ -5,6 +5,7 @@
 #include "data_structures/PriorityQueue.hpp"
 #include "data_structures/ArraySequence.h"
 #include <stdexcept>
+#include "limits.hpp"
 
 template<typename TVertex, typename TWeight>
 ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWeight>& graph, const TVertex& start) {
@@ -22,7 +23,7 @@ ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWei
         throw std::invalid_argument("Start vertex not found in the graph");
     }
 
-    static const auto INF = (TWeight)1e9;
+    static const TWeight INF = custom_limits<TWeight>::max();
 
     ArraySequence<TWeight> dist;
     dist.reserve(n);
@@ -37,8 +38,8 @@ ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWei
         visited.append(false);
     }
 
-    PriorityQueue<int> pq;
-    pq.enqueue(start_index, -(dist.get(start_index))); // приоритет = 0 (со знаком минус)
+    PriorityQueue<int, TWeight> pq;
+    pq.enqueue(start_index, -(dist.get(start_index))); // приоритет = 0 (со знаком минус, чтобы меньшее расстояние было вверху очереди)
 
     while (true) {
         int u;
@@ -71,15 +72,13 @@ ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWei
                     break;
                 }
             }
-            if (v == -1) {
-                continue;
-            }
-            if (visited.get(v)) {
+            if (v == -1 || visited.get(v)) {
                 continue;
             }
 
             TWeight old_dist = dist.get(v);
             TWeight new_dist = dist.get(u) + w; // если w >= 0
+
             if (new_dist < old_dist) {
                 dist.set(v, new_dist);
                 pq.enqueue(v, -new_dist);

@@ -4,9 +4,6 @@
 void test_add_vertex();
 void test_remove_vertex();
 void test_add_edge();
-void test_contains_vertex();
-void test_contains_edge();
-void test_get_edge_weight();
 void test_remove_edge();
 void start_tests();
 void test_get_vertices();

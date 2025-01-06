@@ -9,6 +9,7 @@ struct Pair {
     T2 value2;
 
     Pair() = default;
+    explicit Pair(int x) : value1(static_cast<T1>(x)), value2(static_cast<T2>(x)) {}
     Pair(const T1& v1, const T2& v2) : value1(v1), value2(v2) {}
 
     bool operator==(const Pair& other) const {
@@ -24,7 +25,22 @@ struct Pair {
     bool operator>(const Pair& other) const {
         return (other < *this);
     }
+
+    bool operator>=(const Pair& other) const {
+        return !(*this < other);
+    }
+
 };
+
+template<typename T1, typename T2>
+inline Pair<T1,T2> operator+(const Pair<T1,T2>& lhs, const Pair<T1,T2>& rhs) {
+    return Pair<T1,T2>(lhs.value1 + rhs.value1, lhs.value2 + rhs.value2);
+}
+
+template<typename T1, typename T2>
+inline Pair<T1,T2> operator-(const Pair<T1,T2>& x) {
+    return Pair<T1,T2>(-x.value1, -x.value2);
+}
 
 template<typename TKey, typename TValue>
 struct KeyValuePair : public Pair<TKey, TValue> {

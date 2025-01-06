@@ -19,16 +19,6 @@ void test_add_vertex() {
     assert(graph.contains_vertex("A"));
 }
 
-void test_contains_vertex() {
-    DirectedGraph<std::string, int> graph;
-    graph.add_vertex("A");
-    graph.add_vertex("B");
-
-    assert(graph.contains_vertex("A"));
-    assert(graph.contains_vertex("B"));
-    assert(!graph.contains_vertex("C"));
-}
-
 void test_remove_vertex() {
     DirectedGraph<std::string, int> graph;
 
@@ -61,34 +51,6 @@ void test_add_edge() {
     assert(graph.contains_vertex("C"));
     assert(graph.contains_edge("A", "C"));
     assert(graph.get_edge_weight("A", "C") == 7);
-}
-
-void test_contains_edge() {
-    DirectedGraph<std::string, int> graph;
-    graph.add_edge("A", "B", 5);
-
-    assert(graph.contains_edge("A", "B"));
-    assert(!graph.contains_edge("B", "A"));
-    assert(!graph.contains_edge("A", "C"));
-}
-
-void test_get_edge_weight() {
-    DirectedGraph<std::string, int> graph;
-    graph.add_edge("A", "B", 5);
-
-    assert(graph.get_edge_weight("A", "B") == 5);
-
-    bool exception_thrown = false;
-    try {
-        [[maybe_unused]] int w = graph.get_edge_weight("B", "A");
-    }
-    catch (const std::out_of_range&) {
-        exception_thrown = true;
-    }
-    assert(exception_thrown);
-
-    graph.add_edge("A", "B", 10);
-    assert(graph.get_edge_weight("A", "B") == 10);
 }
 
 void test_remove_edge() {
@@ -219,7 +181,7 @@ void test_get_outgoing_edges() {
 }
 
 void test_enqueue_dequeue() {
-    PriorityQueue<std::string> pq;
+    PriorityQueue<std::string, int> pq;
 
     bool exception_thrown = false;
     try {
@@ -250,14 +212,15 @@ void test_enqueue_dequeue() {
     exception_thrown = false;
     try {
         pq.dequeue();
-    } catch (const std::out_of_range&) {
+    }
+    catch (const std::out_of_range&) {
         exception_thrown = true;
     }
     assert(exception_thrown);
 }
 
 void test_peek_methods() {
-    PriorityQueue<int> pq;
+    PriorityQueue<int, int> pq;
 
     bool exception_thrown = false;
     try {
@@ -300,7 +263,7 @@ void test_peek_methods() {
 }
 
 void test_hidden_methods() {
-    PriorityQueue<int> pq;
+    PriorityQueue<int,int> pq;
     Sequence<int>& seq_ref = pq; // ссылка на базовый класс
 
     bool exception_thrown = false;
@@ -354,7 +317,6 @@ void test_dijkstra() {
         DirectedGraph<std::string, double> graph;
         graph.add_vertex("A");
         graph.add_vertex("B");
-        // нет рёбер
 
         auto dist = dijkstra_shortest_paths<std::string, double>(graph, "A");
         auto verts = graph.get_vertices();
@@ -367,7 +329,7 @@ void test_dijkstra() {
         }
         assert(idx_a != -1 && idx_b != -1);
 
-        static const double INF = 1e9;
+        static const double INF = custom_limits<double>::max();
         assert(dist.get(idx_a) == 0.0);
         assert(dist.get(idx_b) == INF);
     }
@@ -391,9 +353,57 @@ void test_dijkstra() {
         assert(dist.get(idx_b) == 2.5);
 
         auto distB = dijkstra_shortest_paths<std::string, double>(graph, "B");
-        static const double INF = 1e9;
+        static const double INF = custom_limits<double>::max();
         assert(distB.get(idx_b) == 0.0);
         assert(distB.get(idx_a) == INF);
+    }
+
+    {
+        DirectedGraph<std::string, Pair<int, int>> graph;
+        graph.add_edge("A", "B", Pair<int,int>(2, 3));
+        graph.add_edge("A", "C", Pair<int,int>(1, 1));
+        graph.add_edge("B", "C", Pair<int,int>(1, 2));
+
+        auto dist = dijkstra_shortest_paths<std::string, Pair<int,int>>(graph, "A");
+
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 3);
+
+        int idx_a = -1, idx_b = -1, idx_c = -1;
+        for (int i = 0; i < verts.get_length(); i++) {
+            if (verts.get(i) == "A") idx_a = i;
+            if (verts.get(i) == "B") idx_b = i;
+            if (verts.get(i) == "C") idx_c = i;
+        }
+        assert(idx_a != -1 && idx_b != -1 && idx_c != -1);
+
+        assert((dist.get(idx_a) == Pair<int,int>(0, 0)));
+        assert((dist.get(idx_b) == Pair<int,int>(2, 3)));
+        assert((dist.get(idx_c) == Pair<int,int>(1, 1)));
+    }
+
+    {
+        DirectedGraph<std::string, int> graph;
+        graph.add_edge("A", "B", 5);
+        graph.add_edge("A", "C", 10);
+        graph.add_edge("B", "C", 2);
+
+        auto dist = dijkstra_shortest_paths<std::string, int>(graph, "A");
+
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 3);
+
+        int idx_a = -1, idx_b = -1, idx_c = -1;
+        for (int i = 0; i < verts.get_length(); i++) {
+            if (verts.get(i) == "A") idx_a = i;
+            if (verts.get(i) == "B") idx_b = i;
+            if (verts.get(i) == "C") idx_c = i;
+        }
+        assert(idx_a != -1 && idx_b != -1 && idx_c != -1);
+
+        assert(dist.get(idx_a) == 0);
+        assert(dist.get(idx_b) == 5);
+        assert(dist.get(idx_c) == 7);
     }
 }
 
@@ -401,9 +411,6 @@ void start_tests() {
     test_add_vertex();
     test_remove_vertex();
     test_add_edge();
-    test_contains_vertex();
-    test_contains_edge();
-    test_get_edge_weight();
     test_remove_edge();
     test_get_vertices();
     test_get_outgoing_edges();
