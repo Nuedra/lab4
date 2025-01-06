@@ -2,6 +2,7 @@
 #include "DirectedGraph.hpp"
 #include "iostream"
 #include "graph_algorithms.hpp"
+#include "csv/csv_actions.hpp"
 
 int read_int_in_range(const char* prompt, int min_val, int max_val) {
     while (true) {
@@ -48,7 +49,7 @@ void print_graph(const IGraph<TVertex, TWeight>& graph) {
 
 int main() {
     start_tests();
-    DirectedGraph<std::string, double> graph;
+    /*DirectedGraph<std::string, double> graph;
 
     graph.add_edge("A", "B", 2.0);
     graph.add_edge("A", "C", 5.0);
@@ -61,7 +62,15 @@ int main() {
 
     for (int i = 0; i < verts.get_length(); i++) {
         std::cout << "Distance A -> " << verts.get(i) << " = " << dist.get(i) << std::endl;
-    }
+    }*/
+
+    std::string graph_file = "../csv/random_graph.csv";
+    int num_vertices = 5;
+    double p = 0.4; // ~40% ребер
+    int wmin = 1, wmax = 10;
+    generate_and_write_random_graph_to_csv(graph_file, num_vertices, p, wmin, wmax);
+
+    DirectedGraph<std::string,int> graph = read_csv(graph_file);
 
     return 0;
 }

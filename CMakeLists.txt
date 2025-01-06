@@ -17,4 +17,6 @@ add_executable(lab4 main.cpp
         PriorityQueue.hpp
         graph_algorithms.hpp
         graph_algorithms.cpp
-        limits.hpp)
+        limits.hpp
+        csv/csv_actions.hpp
+        csv/csv_actions.cpp)
