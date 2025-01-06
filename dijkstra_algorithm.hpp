@@ -1,5 +1,5 @@
-#ifndef LAB4_GRAPH_ALGORITHMS_HPP
-#define LAB4_GRAPH_ALGORITHMS_HPP
+#ifndef LAB4_DIJKSTRA_ALGORITHM_HPP
+#define LAB4_DIJKSTRA_ALGORITHM_HPP
 
 #include "DirectedGraph.hpp"
 #include "PriorityQueue.hpp"
@@ -89,4 +89,4 @@ ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWei
     return dist;
 }
 
-#endif //LAB4_GRAPH_ALGORITHMS_HPP
+#endif //LAB4_DIJKSTRA_ALGORITHM_HPP

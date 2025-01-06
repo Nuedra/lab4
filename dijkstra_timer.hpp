@@ -1,0 +1,8 @@
+#ifndef LAB4_DIJKSTRA_TIMER_HPP
+#define LAB4_DIJKSTRA_TIMER_HPP
+
+#include <string>
+
+void measure_and_save_dijkstra_times(const std::string& csv_filename, int min_size, int max_size, int step_size);
+
+#endif //LAB4_DIJKSTRA_TIMER_HPP

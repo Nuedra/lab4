@@ -15,8 +15,9 @@ add_executable(lab4 main.cpp
         tests.hpp
         tests.cpp
         PriorityQueue.hpp
-        graph_algorithms.hpp
-        graph_algorithms.cpp
+        dijkstra_algorithm.hpp
         limits.hpp
         csv/csv_actions.hpp
-        csv/csv_actions.cpp)
+        csv/csv_actions.cpp
+        dijkstra_timer.hpp
+        dijkstra_timer.cpp)

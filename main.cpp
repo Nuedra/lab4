@@ -1,8 +1,10 @@
 #include "tests.hpp"
 #include "DirectedGraph.hpp"
 #include "iostream"
-#include "graph_algorithms.hpp"
+#include "dijkstra_algorithm.hpp"
 #include "csv/csv_actions.hpp"
+#include "dijkstra_timer.hpp"
+#include <string>
 
 int read_int_in_range(const char* prompt, int min_val, int max_val) {
     while (true) {
@@ -49,7 +51,8 @@ void print_graph(const IGraph<TVertex, TWeight>& graph) {
 
 int main() {
     start_tests();
-    /*DirectedGraph<std::string, double> graph;
+    /*
+    DirectedGraph<std::string, double> graph;
 
     graph.add_edge("A", "B", 2.0);
     graph.add_edge("A", "C", 5.0);
@@ -62,7 +65,7 @@ int main() {
 
     for (int i = 0; i < verts.get_length(); i++) {
         std::cout << "Distance A -> " << verts.get(i) << " = " << dist.get(i) << std::endl;
-    }*/
+    }
 
     std::string graph_file = "../csv/random_graph.csv";
     int num_vertices = 5;
@@ -70,7 +73,13 @@ int main() {
     int wmin = 1, wmax = 10;
     generate_and_write_random_graph_to_csv(graph_file, num_vertices, p, wmin, wmax);
 
-    DirectedGraph<std::string,int> graph = read_csv(graph_file);
+    DirectedGraph<std::string, int> graph = read_csv(graph_file);
+    */
+    const std::string& csv_filename = "../dijkstra_time.csv";
+    int min_size = 100;
+    int max_size = 500;
+    int step_size = 100;
 
+    measure_and_save_dijkstra_times(csv_filename, min_size, max_size, step_size);
     return 0;
 }

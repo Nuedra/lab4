@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "DirectedGraph.hpp"
 #include "PriorityQueue.hpp"
-#include "graph_algorithms.hpp"
+#include "dijkstra_algorithm.hpp"
 
 void test_add_vertex() {
     DirectedGraph<std::string, int> graph;
