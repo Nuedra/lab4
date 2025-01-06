@@ -1,85 +1,77 @@
 #include "tests.hpp"
-#include "DirectedGraph.hpp"
-#include "iostream"
-#include "dijkstra_algorithm.hpp"
-#include "csv/csv_actions.hpp"
-#include "dijkstra_timer.hpp"
-#include <string>
-
-int read_int_in_range(const char* prompt, int min_val, int max_val) {
-    while (true) {
-        std::cout << prompt;
-
-        int value = 0;
-        if (!(std::cin >> value)) {
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            std::cout << "Некорректный ввод, попробуйте снова.\n";
-            continue;
-        }
-
-        std::cin.ignore(10000, '\n');
-
-        if (value < min_val || value > max_val) {
-            std::cout << "Значение должно быть в диапазоне ["
-                      << min_val << ", " << max_val << "]. Попробуйте снова.\n";
-            continue;
-        }
-
-        return value;
-    }
-}
-
-template<typename TVertex, typename TWeight>
-void print_graph(const IGraph<TVertex, TWeight>& graph) {
-    std::cout << "Directed Graph contents:\n";
-
-    auto verts = graph.get_vertices();
-    for (size_t i = 0; i < verts.get_length(); i++) {
-        const TVertex& v = verts.get(i);
-        std::cout << "Vertex [" << v << "]:\n";
-
-        auto edges = graph.get_outgoing_edges(v);
-        for (size_t j = 0; j < edges.get_length(); j++) {
-            const auto& pair_vertex_edge = edges.get(j);
-            std::cout << "   -> " << pair_vertex_edge.value1 << " (weight = " << pair_vertex_edge.value2 << ")\n";
-        }
-    }
-
-    std::cout << std::endl;
-}
+#include "menu.hpp"
 
 int main() {
     start_tests();
     /*
-    DirectedGraph<std::string, double> graph;
+    while (true) {
+        std::cout << "\nГлавное меню:\n"
+                  << "1) Создать граф вручную\n"
+                  << "2) Сгенерировать случайный граф (в памяти)\n"
+                  << "3) Измерить время работы Дейкстры (серию графов)\n"
+                  << "0) Выход\n";
+        int choice = read_int_in_range("Введите номер: ", 0, 3);
+        if (choice == 0) {
+            std::cout << "Выход.\n";
+            break;
+        }
 
-    graph.add_edge("A", "B", 2.0);
-    graph.add_edge("A", "C", 5.0);
-    graph.add_edge("B", "C", 1.5);
-    graph.add_edge("B", "D", 6.0);
-    graph.add_edge("C", "D", 1.0);
+        else if (choice == 1) {
+            auto v_choice = choose_vertex_type();
+            auto w_choice = choose_weight_type();
+            // INT
+            if (v_choice == VertexChoice::INT_VERTEX && w_choice == WeightChoice::INT_WEIGHT) {
+                DirectedGraph<int, int> graph;
+                graph_menu(graph);
+            }
+            else if (v_choice == VertexChoice::INT_VERTEX && w_choice == WeightChoice::DOUBLE_WEIGHT) {
+                DirectedGraph<int, double> graph;
+                graph_menu(graph);
+            }
+            else if (v_choice == VertexChoice::INT_VERTEX && w_choice == WeightChoice::PAIR_DOUBLE_DOUBLE_WEIGHT) {
+                DirectedGraph<int, Pair<double, double>> graph;
+                graph_menu(graph);
+            }
+            // STRING
+            else if (v_choice == VertexChoice::STRING_VERTEX && w_choice == WeightChoice::INT_WEIGHT) {
+                DirectedGraph<std::string, int> graph;
+                graph_menu(graph);
+            }
+            else if (v_choice == VertexChoice::STRING_VERTEX && w_choice == WeightChoice::DOUBLE_WEIGHT) {
+                DirectedGraph<std::string, double> graph;
+                graph_menu(graph);
+            }
+            else if (v_choice == VertexChoice::STRING_VERTEX && w_choice == WeightChoice::PAIR_DOUBLE_DOUBLE_WEIGHT) {
+                DirectedGraph<std::string, Pair<double, double>> graph;
+                graph_menu(graph);
+            }
+            //CHAR
+            else if (v_choice == VertexChoice::CHAR_VERTEX && w_choice == WeightChoice::INT_WEIGHT) {
+                DirectedGraph<char, int> graph;
+                graph_menu(graph);
+            }
+            else if (v_choice == VertexChoice::CHAR_VERTEX && w_choice == WeightChoice::DOUBLE_WEIGHT) {
+                DirectedGraph<char, double> graph;
+                graph_menu(graph);
+            }
+            else if (v_choice == VertexChoice::CHAR_VERTEX && w_choice == WeightChoice::PAIR_DOUBLE_DOUBLE_WEIGHT) {
+                DirectedGraph<char, Pair<double, double>> graph;
+                graph_menu(graph);
+            }
 
-    auto dist = dijkstra_shortest_paths<std::string, double>(graph, "A");
-    auto verts = graph.get_vertices();
+        }
 
-    for (int i = 0; i < verts.get_length(); i++) {
-        std::cout << "Distance A -> " << verts.get(i) << " = " << dist.get(i) << std::endl;
+        else if (choice == 2) {
+
+        }
     }
-
-    std::string graph_file = "../csv/random_graph.csv";
-    int num_vertices = 5;
-    double p = 0.4; // ~40% ребер
-    int wmin = 1, wmax = 10;
-    generate_and_write_random_graph_to_csv(graph_file, num_vertices, p, wmin, wmax);
-
-    DirectedGraph<std::string, int> graph = read_csv(graph_file);
     */
-    const std::string& csv_filename = "../dijkstra_time.csv";
-    int min_size = 100;
-    int max_size = 500;
-    int step_size = 100;
+    const std::string& filename = "../dot/mama.dot";
+    int number_of_vertices = 10;
+    double edge_probability = 0.0;
+    int min_weight = 1;
+    int max_weight = 10;
 
-    measure_and_save_dijkstra_times(csv_filename, min_size, max_size, step_size);
+    generate_and_write_random_graph_to_dot(filename,  number_of_vertices,  edge_probability, min_weight, max_weight);
     return 0;
 }

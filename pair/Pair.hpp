@@ -2,6 +2,7 @@
 #define LAB3_PAIR_HPP
 
 #include <functional> // for hash
+#include <iostream>
 
 template<typename T1, typename T2>
 struct Pair {
@@ -40,6 +41,12 @@ inline Pair<T1,T2> operator+(const Pair<T1,T2>& lhs, const Pair<T1,T2>& rhs) {
 template<typename T1, typename T2>
 inline Pair<T1,T2> operator-(const Pair<T1,T2>& x) {
     return Pair<T1,T2>(-x.value1, -x.value2);
+}
+
+template<typename T1, typename T2>
+inline std::ostream& operator<<(std::ostream& os, const Pair<T1,T2>& p) {
+    os << "(" << p.value1 << "," << p.value2 << ")";
+    return os;
 }
 
 template<typename TKey, typename TValue>
