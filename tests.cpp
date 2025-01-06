@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include "DirectedGraph.hpp"
-#include "data_structures/PriorityQueue.hpp"
+#include "PriorityQueue.hpp"
 #include "graph_algorithms.hpp"
 
 void test_add_vertex() {

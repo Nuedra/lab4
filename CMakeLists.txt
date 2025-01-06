@@ -14,7 +14,7 @@ add_executable(lab4 main.cpp
         DirectedGraph.hpp
         tests.hpp
         tests.cpp
-        data_structures/PriorityQueue.hpp
+        PriorityQueue.hpp
         graph_algorithms.hpp
         graph_algorithms.cpp
         limits.hpp)

@@ -1,9 +1,9 @@
 #ifndef LAB4_PRIORITYQUEUE_HPP
 #define LAB4_PRIORITYQUEUE_HPP
 
-#include "Sequence.h"
-#include "ArraySequence.h"
-#include "../pair/Pair.hpp"
+#include "data_structures/Sequence.h"
+#include "data_structures/ArraySequence.h"
+#include "pair/Pair.hpp"
 #include <stdexcept>
 
 template<typename TItem, typename TPriority>
@@ -25,6 +25,7 @@ public:
                 break;
             }
         }
+
         data_.insert_at(new_pair, insert_pos);
     }
 

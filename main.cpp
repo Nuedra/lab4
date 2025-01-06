@@ -3,6 +3,30 @@
 #include "iostream"
 #include "graph_algorithms.hpp"
 
+int read_int_in_range(const char* prompt, int min_val, int max_val) {
+    while (true) {
+        std::cout << prompt;
+
+        int value = 0;
+        if (!(std::cin >> value)) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Некорректный ввод, попробуйте снова.\n";
+            continue;
+        }
+
+        std::cin.ignore(10000, '\n');
+
+        if (value < min_val || value > max_val) {
+            std::cout << "Значение должно быть в диапазоне ["
+                      << min_val << ", " << max_val << "]. Попробуйте снова.\n";
+            continue;
+        }
+
+        return value;
+    }
+}
+
 template<typename TVertex, typename TWeight>
 void print_graph(const IGraph<TVertex, TWeight>& graph) {
     std::cout << "Directed Graph contents:\n";

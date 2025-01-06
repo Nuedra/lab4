@@ -21,4 +21,4 @@ public:
     virtual ArraySequence<Pair<TVertex, TWeight>> get_outgoing_edges(const TVertex& vertex) const = 0;
 };
 
-#endif
+#endif //LAB4_IGRAPH_HPP

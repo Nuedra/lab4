@@ -2,7 +2,7 @@
 #define LAB4_GRAPH_ALGORITHMS_HPP
 
 #include "DirectedGraph.hpp"
-#include "data_structures/PriorityQueue.hpp"
+#include "PriorityQueue.hpp"
 #include "data_structures/ArraySequence.h"
 #include <stdexcept>
 #include "limits.hpp"
@@ -39,7 +39,7 @@ ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWei
     }
 
     PriorityQueue<int, TWeight> pq;
-    pq.enqueue(start_index, -(dist.get(start_index))); // приоритет = 0 (со знаком минус, чтобы меньшее расстояние было вверху очереди)
+    pq.enqueue(start_index, -(dist.get(start_index))); // со знаком минус, чтобы меньшее расстояние было вверху очереди
 
     while (true) {
         int u;
