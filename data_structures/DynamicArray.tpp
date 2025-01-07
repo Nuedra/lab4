@@ -1,4 +1,3 @@
-// DynamicArray.tpp
 #ifndef DYNAMIC_ARRAY_TPP
 #define DYNAMIC_ARRAY_TPP
 
