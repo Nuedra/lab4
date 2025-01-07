@@ -4,8 +4,13 @@ project(lab4)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(Boost REQUIRED COMPONENTS iostreams)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GRAPHVIZ REQUIRED libgvc)
 
 include_directories(${Boost_INCLUDE_DIRS})
+
+include_directories(${GRAPHVIZ_INCLUDE_DIRS})
+link_directories(${GRAPHVIZ_LIBRARY_DIRS})
 
 add_executable(lab4 main.cpp
         pair/Pair.hpp
@@ -28,6 +33,9 @@ add_executable(lab4 main.cpp
         menu.hpp
         menu.cpp
         graphics/dijkstra_times_graphic.hpp
-        graphics/dijkstra_times_graphic.cpp)
+        graphics/dijkstra_times_graphic.cpp
+        graphics/graph.hpp
+        graphics/graph.cpp)
 
 target_link_libraries(lab4 ${Boost_LIBRARIES})
+target_link_libraries(lab4 ${GRAPHVIZ_LIBRARIES})

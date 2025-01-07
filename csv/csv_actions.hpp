@@ -3,7 +3,6 @@
 
 #include <string>
 #include "../DirectedGraph.hpp"
-#include <fstream>
 
 int generate_random_int(int min, int max);
 double random_double(double min_val, double max_val);

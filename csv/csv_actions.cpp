@@ -86,7 +86,7 @@ DirectedGraph<std::string, int> read_csv(const std::string& filename) {
     dot_file.close();
     return graph;
 }
-
+// РАЗБИТЬ НА 2 ФУНКЦИИ ОДНА ПРЕВРАЩАЕТ В DOT а другая читает
 void csv_to_dot(const std::string& csv_filename) {
     DirectedGraph<std::string,int> graph = read_csv(csv_filename);
     std::string dot_filename = csv_filename;

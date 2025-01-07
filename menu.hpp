@@ -8,6 +8,7 @@
 #include "dijkstra_timer.hpp"
 #include <string>
 #include "pair/Pair.hpp"
+#include "graphics/graph.hpp"
 
 enum class VertexChoice {
     INT_VERTEX,
@@ -175,6 +176,14 @@ void graph_menu_for_random_graph(DirectedGraph<TVertex, TWeight>& graph) {
                     std::cout << "dist(" << start << " -> " << verts.get(i) << ") = " << dist.get(i) << "\n";
                 }
             }
+        }
+        else if (c==3) {
+            std::string csv_filename = "../csv/random_graph.csv";
+            csv_to_dot(csv_filename);
+            std::string dot_filename = "../csv/random_graph.dot";
+            std::string png_filename = "../graphics/random_graph.png";
+
+            visualize_graph(dot_filename, png_filename);
         }
     }
 }
