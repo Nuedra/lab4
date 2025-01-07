@@ -1,7 +1,7 @@
 #ifndef LAB3_PAIR_HPP
 #define LAB3_PAIR_HPP
 
-#include <functional> // for hash
+#include <functional> // hash
 #include <iostream>
 
 template<typename T1, typename T2>

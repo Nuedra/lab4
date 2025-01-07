@@ -4,7 +4,6 @@
 #include "dijkstra_timer.hpp"
 
 int main() {
-
     start_tests();
     while (true) {
         std::cout << "\nГлавное меню:\n"
@@ -93,7 +92,6 @@ int main() {
             std::system("clear");
         }
     }
-
 
     return 0;
 }

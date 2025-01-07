@@ -5,6 +5,7 @@
 #include "DirectedGraph.hpp"
 #include "dijkstra_algorithm.hpp"
 #include "data_structures/ArraySequence.h"
+#include "graphics/dijkstra_times_graphic.hpp"
 #include <fstream>
 #include "csv/csv_actions.hpp"
 
@@ -40,6 +41,10 @@ void measure_and_save_dijkstra_times(const std::string& csv_filename, int step, 
     }
 
     csv_file.close();
+
+    std::string png_name = "../graphics/dijkstra_time_graphic.png";
+    plot_dijkstra_times(csv_filename, png_name, edge_probability, min_weight, max_weight);
+
 }
 
 

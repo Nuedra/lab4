@@ -27,6 +27,7 @@ add_executable(lab4 main.cpp
         dijkstra_timer.cpp
         menu.hpp
         menu.cpp
-        graphics/dijkstra_times_graphic.hpp)
+        graphics/dijkstra_times_graphic.hpp
+        graphics/dijkstra_times_graphic.cpp)
 
 target_link_libraries(lab4 ${Boost_LIBRARIES})
