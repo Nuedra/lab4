@@ -1,7 +1,7 @@
-#include "graph.hpp"
 #include <stdexcept>
 #include <string>
 #include <graphviz/gvc.h>
+#include "graph.hpp"
 
 #pragma clang diagnostic ignored "-Wwritable-strings"
 void visualize_graph(const std::string& dot_filename, const std::string& png_filename) {

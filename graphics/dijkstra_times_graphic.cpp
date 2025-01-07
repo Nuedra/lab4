@@ -1,10 +1,11 @@
-#include "dijkstra_times_graphic.hpp"
-#include "../libs/gnuplot-iostream.h"
 #include <vector>
 #include <string>
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
+#include "dijkstra_times_graphic.hpp"
+#include "../libs/gnuplot-iostream.h"
+#include "../data_structures/ArraySequence.h"
 
 void plot_dijkstra_times(const std::string& csv_filename, const std::string& png_filename, double edge_probability, int min_step, int max_step) {
     std::ifstream csv_file(csv_filename);
@@ -16,22 +17,12 @@ void plot_dijkstra_times(const std::string& csv_filename, const std::string& png
     std::string line;
     std::getline(csv_file, line);
 
-    std::vector<std::string> headers;
+    ArraySequence<std::string> headers;
     std::istringstream header_ss(line);
     std::string header_token;
 
     while (std::getline(header_ss, header_token, ',')) {
-        headers.push_back(header_token);
-    }
-
-    if (headers.size() < 2) {
-        std::cerr << "CSV file must have at least 'Vertices' and 'Time_ms' columns." << std::endl;
-        return;
-    }
-
-    if (headers[0] != "Vertices") {
-        std::cerr << "First column must be 'Vertices'." << std::endl;
-        return;
+        headers.append(header_token);
     }
 
     std::vector<int> vertices;
@@ -62,7 +53,6 @@ void plot_dijkstra_times(const std::string& csv_filename, const std::string& png
     gp << "set grid\n";
     gp << "set key left top\n";
 
-    // Добавление информации в легенду
     std::ostringstream legend;
     legend << "Edge Probability: " << edge_probability << ", Weight Range: [" << min_step << ", " << max_step << "]";
 

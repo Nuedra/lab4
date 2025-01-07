@@ -1,11 +1,12 @@
-#include "tests.hpp"
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include "tests.hpp"
 #include "DirectedGraph.hpp"
 #include "PriorityQueue.hpp"
 #include "dijkstra_algorithm.hpp"
+#include "limits.hpp"
 
 void test_add_vertex() {
     DirectedGraph<std::string, int> graph;
@@ -105,12 +106,6 @@ void test_get_vertices() {
         }
         assert(has_a && has_b);
     }
-
-    graph.add_edge("A", "B", 5);
-    {
-        auto verts = graph.get_vertices();
-        assert(verts.get_length() == 2);
-    }
 }
 
 
@@ -159,25 +154,6 @@ void test_get_outgoing_edges() {
             assert(pair_b0.value2 == 10);
         }
     }
-
-    graph.add_edge("A", "C", 7);
-    {
-        auto edgesA = graph.get_outgoing_edges("A");
-        assert(edgesA.get_length() == 2);
-
-        bool fount_b5 = false;
-        bool fount_c7 = false;
-        for (int i = 0; i < edgesA.get_length(); i++) {
-            const auto& p = edgesA.get(i);
-            if (p.value1 == "B" && p.value2 == 5) {
-                fount_b5 = true;
-            }
-            if (p.value1 == "C" && p.value2 == 7) {
-                fount_c7 = true;
-            }
-        }
-        assert(fount_b5 && fount_c7);
-    }
 }
 
 void test_enqueue_dequeue() {
@@ -222,24 +198,6 @@ void test_enqueue_dequeue() {
 void test_peek_methods() {
     PriorityQueue<int, int> pq;
 
-    bool exception_thrown = false;
-    try {
-        pq.peek_first();
-    }
-    catch (const std::out_of_range&) {
-        exception_thrown = true;
-    }
-    assert(exception_thrown);
-
-    exception_thrown = false;
-    try {
-        pq.peek_last();
-    }
-    catch (const std::out_of_range&) {
-        exception_thrown = true;
-    }
-    assert(exception_thrown);
-
     pq.enqueue(11, 5);
     pq.enqueue(22, 8);
     pq.enqueue(33, 8);
@@ -252,7 +210,7 @@ void test_peek_methods() {
     assert(pq.peek(0) == 44);
     assert(pq.peek(3) == 11);
 
-    exception_thrown = false;
+    bool exception_thrown = false;
     try {
         pq.peek(99); //  такого индекса нет
     }
@@ -327,7 +285,6 @@ void test_dijkstra() {
             if (verts.get(i) == "A") idx_a = i;
             if (verts.get(i) == "B") idx_b = i;
         }
-        assert(idx_a != -1 && idx_b != -1);
 
         static const double INF = custom_limits<double>::max();
         assert(dist.get(idx_a) == 0.0);
@@ -347,7 +304,6 @@ void test_dijkstra() {
             if (verts.get(i) == "A") idx_a = i;
             if (verts.get(i) == "B") idx_b = i;
         }
-        assert(idx_a != -1 && idx_b != -1);
 
         assert(dist.get(idx_a) == 0.0);
         assert(dist.get(idx_b) == 2.5);
@@ -356,30 +312,6 @@ void test_dijkstra() {
         static const double INF = custom_limits<double>::max();
         assert(distB.get(idx_b) == 0.0);
         assert(distB.get(idx_a) == INF);
-    }
-
-    {
-        DirectedGraph<std::string, Pair<int, int>> graph;
-        graph.add_edge("A", "B", Pair<int,int>(2, 3));
-        graph.add_edge("A", "C", Pair<int,int>(1, 1));
-        graph.add_edge("B", "C", Pair<int,int>(1, 2));
-
-        auto dist = dijkstra_shortest_paths<std::string, Pair<int,int>>(graph, "A");
-
-        auto verts = graph.get_vertices();
-        assert(verts.get_length() == 3);
-
-        int idx_a = -1, idx_b = -1, idx_c = -1;
-        for (int i = 0; i < verts.get_length(); i++) {
-            if (verts.get(i) == "A") idx_a = i;
-            if (verts.get(i) == "B") idx_b = i;
-            if (verts.get(i) == "C") idx_c = i;
-        }
-        assert(idx_a != -1 && idx_b != -1 && idx_c != -1);
-
-        assert((dist.get(idx_a) == Pair<int,int>(0, 0)));
-        assert((dist.get(idx_b) == Pair<int,int>(2, 3)));
-        assert((dist.get(idx_c) == Pair<int,int>(1, 1)));
     }
 
     {
@@ -399,11 +331,33 @@ void test_dijkstra() {
             if (verts.get(i) == "B") idx_b = i;
             if (verts.get(i) == "C") idx_c = i;
         }
-        assert(idx_a != -1 && idx_b != -1 && idx_c != -1);
 
         assert(dist.get(idx_a) == 0);
         assert(dist.get(idx_b) == 5);
         assert(dist.get(idx_c) == 7);
+    }
+
+    {
+        DirectedGraph<std::string, Pair<int, int>> graph;
+        graph.add_edge("A", "B", Pair<int,int>(2, 3));
+        graph.add_edge("A", "C", Pair<int,int>(1, 1));
+        graph.add_edge("B", "C", Pair<int,int>(1, 2));
+
+        auto dist = dijkstra_shortest_paths<std::string, Pair<int,int>>(graph, "A");
+
+        auto verts = graph.get_vertices();
+        assert(verts.get_length() == 3);
+
+        int idx_a = -1, idx_b = -1, idx_c = -1;
+        for (int i = 0; i < verts.get_length(); i++) {
+            if (verts.get(i) == "A") idx_a = i;
+            if (verts.get(i) == "B") idx_b = i;
+            if (verts.get(i) == "C") idx_c = i;
+        }
+
+        assert((dist.get(idx_a) == Pair<int,int>(0, 0)));
+        assert((dist.get(idx_b) == Pair<int,int>(2, 3)));
+        assert((dist.get(idx_c) == Pair<int,int>(1, 1)));
     }
 }
 

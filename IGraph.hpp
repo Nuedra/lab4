@@ -1,7 +1,6 @@
 #ifndef LAB4_IGRAPH_HPP
 #define LAB4_IGRAPH_HPP
 
-#include "data_structures/HashTable.hpp"
 #include "data_structures/ArraySequence.h"
 #include "pair/Pair.hpp"
 

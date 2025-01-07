@@ -108,9 +108,7 @@ public:
         return result;
     }
 
-    ArraySequence<Pair<TVertex, TWeight>>
-    get_outgoing_edges(const TVertex& vertex) const override
-    {
+    ArraySequence<Pair<TVertex, TWeight>> get_outgoing_edges(const TVertex& vertex) const override {
         ArraySequence<Pair<TVertex, TWeight>> edges;
         if (!adjacency_list_.contains_key(vertex)) {
             return edges;

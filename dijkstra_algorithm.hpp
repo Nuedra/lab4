@@ -1,10 +1,10 @@
 #ifndef LAB4_DIJKSTRA_ALGORITHM_HPP
 #define LAB4_DIJKSTRA_ALGORITHM_HPP
 
+#include <stdexcept>
 #include "DirectedGraph.hpp"
 #include "PriorityQueue.hpp"
 #include "data_structures/ArraySequence.h"
-#include <stdexcept>
 #include "limits.hpp"
 
 template<typename TVertex, typename TWeight>
@@ -72,6 +72,7 @@ ArraySequence<TWeight> dijkstra_shortest_paths(const DirectedGraph<TVertex, TWei
                     break;
                 }
             }
+
             if (v == -1 || visited.get(v)) {
                 continue;
             }

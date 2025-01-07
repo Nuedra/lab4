@@ -1,6 +1,6 @@
+#include <cstdlib>
 #include "tests.hpp"
 #include "menu.hpp"
-#include <cstdlib>
 #include "dijkstra_timer.hpp"
 
 int main() {
@@ -66,7 +66,7 @@ int main() {
         else if (choice == 2) {
             const std::string& filename = "../csv/random_graph.csv";
             int n = read_in_range<int>("Количество вершин: ",1, 100000);
-            double p = read_in_range<double>("Вероятность возникновения ребра (0..1), при большом кол-ве вершин не рекомендуется > 0.3: ",
+            double p = read_in_range<double>("Вероятность возникновения ребра (0..1): ",
                                              0.0, 1.0);
             int min_w = read_in_range<int>("Минимальный вес дуги: ", 0, 9999);
             int max_w = read_in_range<int>("Максимальный вес дуги: ", min_w, 9999);

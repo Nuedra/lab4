@@ -1,15 +1,5 @@
 #include "menu.hpp"
-#include "DirectedGraph.hpp"
 #include <iostream>
-#include "dijkstra_algorithm.hpp"
-#include "csv/csv_actions.hpp"
-#include "dijkstra_timer.hpp"
-#include <string>
-#include "pair/Pair.hpp"
-#include <limits>
-#include <stdexcept>
-#include "data_structures/ArraySequence.h"
-#include "PriorityQueue.hpp"
 
 VertexChoice choose_vertex_type() {
     std::cout << "Выберите тип вершины:\n"

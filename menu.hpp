@@ -1,14 +1,14 @@
 #ifndef LAB4_MENU_HPP
 #define LAB4_MENU_HPP
 
-#include "DirectedGraph.hpp"
 #include <iostream>
+#include <string>
 #include "dijkstra_algorithm.hpp"
 #include "csv/csv_actions.hpp"
-#include "dijkstra_timer.hpp"
-#include <string>
+#include "limits.hpp"
 #include "pair/Pair.hpp"
 #include "graphics/graph.hpp"
+#include "DirectedGraph.hpp"
 
 enum class VertexChoice {
     INT_VERTEX,
@@ -79,8 +79,9 @@ void graph_menu(DirectedGraph<TVertex, TWeight>& graph) {
                   << "4. Удалить ребро\n"
                   << "5. Вывести граф\n"
                   << "6. Запустить Дейкстру\n"
+                  << "7. Представить в графическом виде(graphviz)\n"
                   << "0. Вернуться в главное меню\n";
-        int c = read_in_range<int>("Выберите опцию: ", 0, 6);
+        int c = read_in_range<int>("Выберите опцию: ", 0, 7);
         if (c == 0) {
             break;
         }
@@ -146,6 +147,13 @@ void graph_menu(DirectedGraph<TVertex, TWeight>& graph) {
                 }
             }
         }
+        else if (c==7){
+            std::string dot_filename = "../csv/user_graph.dot";
+            to_dot(graph, dot_filename);
+
+            std::string png_filename = "../graphics/user_graph.png";
+            visualize_graph(dot_filename, png_filename);
+        }
     }
 }
 
@@ -155,7 +163,7 @@ void graph_menu_for_random_graph(DirectedGraph<TVertex, TWeight>& graph) {
         std::cout << "\n[Операции с случайно созданным графом]\n"
                   << "1. Вывести граф\n"
                   << "2. Запустить Дейкстру\n"
-                  << "3. Представь в графическом виде(graphviz), не рекомендуется для графов состоящих из более чем 20 вершин\n"
+                  << "3. Представить в графическом виде(graphviz)\n"
                   << "0. Вернуться в главное меню\n";
         int c = read_in_range<int>("Выберите опцию: ", 0, 3);
         if (c == 0) {
@@ -178,11 +186,10 @@ void graph_menu_for_random_graph(DirectedGraph<TVertex, TWeight>& graph) {
             }
         }
         else if (c==3) {
-            std::string csv_filename = "../csv/random_graph.csv";
-            csv_to_dot(csv_filename);
             std::string dot_filename = "../csv/random_graph.dot";
-            std::string png_filename = "../graphics/random_graph.png";
+            to_dot(graph, dot_filename);
 
+            std::string png_filename = "../graphics/random_graph.png";
             visualize_graph(dot_filename, png_filename);
         }
     }

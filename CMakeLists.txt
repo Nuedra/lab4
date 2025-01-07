@@ -8,7 +8,6 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(GRAPHVIZ REQUIRED libgvc)
 
 include_directories(${Boost_INCLUDE_DIRS})
-
 include_directories(${GRAPHVIZ_INCLUDE_DIRS})
 link_directories(${GRAPHVIZ_LIBRARY_DIRS})
 

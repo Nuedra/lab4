@@ -1,10 +1,10 @@
 #ifndef LAB4_PRIORITYQUEUE_HPP
 #define LAB4_PRIORITYQUEUE_HPP
 
+#include <stdexcept>
 #include "data_structures/Sequence.h"
 #include "data_structures/ArraySequence.h"
 #include "pair/Pair.hpp"
-#include <stdexcept>
 
 template<typename TItem, typename TPriority>
 class PriorityQueue : public Sequence<TItem> {
@@ -31,7 +31,7 @@ public:
 
     TItem dequeue() {
         if (data_.get_length() == 0) {
-            throw std::out_of_range("priority_queue is empty (dequeue)");
+            throw std::out_of_range("priority_queue is empty");
         }
 
         auto top = data_.get(0);
@@ -41,14 +41,14 @@ public:
 
     TItem peek(int i) {
         if (i < 0 || i >= data_.get_length()) {
-            throw std::out_of_range("Index out of range in peek()");
+            throw std::out_of_range("Index out of range in peek");
         }
         return data_.get(i).value1;
     }
 
     TItem peek_first() {
         if (data_.get_length() == 0) {
-            throw std::out_of_range("priority_queue is empty (peek_first)");
+            throw std::out_of_range("priority_queue is empty");
         }
         return data_.get(0).value1;
     }
@@ -56,7 +56,7 @@ public:
     TItem peek_last() {
         int len = data_.get_length();
         if (len == 0) {
-            throw std::out_of_range("priority_queue is empty (peek_last)");
+            throw std::out_of_range("priority_queue is empty");
         }
         return data_.get(len - 1).value1;
     }
